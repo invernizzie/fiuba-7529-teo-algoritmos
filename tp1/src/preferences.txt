@@ -1,0 +1,9 @@
+Alberto: Ana,Betina,Carla,Dalma
+Bato: Dalma,Carla,Betina,Ana
+Carlos: Dalma,Carla,Betina,Ana
+Demian: Betina,Ana,Carla,Dalma
+
+Ana: Alberto,Carlos,Bato,Demian
+Betina: Demian,Bato,Carlos,Alberto
+Carla: Alberto,Demian,Bato,Carlos
+Dalma: Carlos,Demian,Alberto,Bato
