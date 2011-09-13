@@ -1,32 +1,28 @@
 __author__ = 'esteban'
 
-from stable_matches import parse_preferences, CoupleStabilityChecker
+from stable_matches import parse_preferences, CoupleStabilityChecker, CoupleMatcher
 
-class BacktrackingMatcher:
+class BacktrackingMatcher (CoupleMatcher):
 
     def __init__(self, men_likes, women_likes):
-        self.men_likes = men_likes
-        self.women_likes = women_likes
+        CoupleMatcher.__init__(self, men_likes, women_likes)
         self.couples = []
-        self.checker = CoupleStabilityChecker(men_likes, women_likes)
 
     def add_couple(self, available_men, available_women):
 
         if not len(available_men): return True
 
-        current_man = 0
-        current_woman = 0
-
-        for man in available_men:
-            for woman in available_women:
-                couple = man, woman
-                if self.checker.are_stable(self.couples + [couple]):
-                    self.couples.append(couple)
-                    remaining_men = filter(lambda x: x != man, available_men)
-                    remaining_women = filter(lambda x: x != woman, available_women)
-                    if self.add_couple(remaining_men, remaining_women):
-                        return True
-                    self.couples.remove(couple)
+        man = available_men[0]
+        available_men = available_men[1:]
+        for i in range(len(available_women)):
+            woman = available_women[i]
+            couple = man, woman                                                     # cte
+            if self.checker.are_stable(self.couples + [couple]):                    # n^3
+                self.couples.append(couple)                                         # cte
+                remaining_women = available_women[:i] + available_women[i+1:]       # cte
+                if self.add_couple(available_men, remaining_women):                 # f(n - 1)
+                    return True
+                self.couples.remove(couple)                                         # n
 
         return False
 
